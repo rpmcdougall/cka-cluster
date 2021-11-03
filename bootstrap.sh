@@ -8,29 +8,23 @@ apt get update && apt-get upgrade
 modprobe overlay
 modprobe br_netfilter
 
-cat > /etc/systcl.d/99-kubernetes-cri.conf << EOF
+cat << EOF > /etc/systcl.d/99-kubernetes-cri.conf 
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 EOF
 
 echo \
-  "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VER/$OS/ /" \
-  | tee -a /etc/apt/sources.list.d/cri-0.list
+"deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VER/$OS/ /" \
+| tee -a /etc/apt/sources.list.d/cri-0.list
 
-curl -L \
-  http://download.opensuse.org/repositories/devel:/kubiuc:/libcontainers:/stable:/cri-o:/$VER/$OS/Release.key \
-  | apt-key add -
+curl -L http://download.opensuse.org/repositories/devel:/kubiuc:/libcontainers:/stable:/cri-o:/$VER/$OS/Release.key | apt-key add -
 
 
-echo \ 
-  "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" \
-  | tee -a /etc/apt/sources.list.d/libcontainers.list
-
-
-curl -L \
-  https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key \
-  | apt-key add - 
+echo \
+"deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" \
+| tee -a /etc/apt/sources.list.d/libcontainers.list
+curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | apt-key add - 
 
 apt-get update
 
@@ -42,7 +36,8 @@ systemctl enable crio
 systemctl start crio
 
 #K8s Install
-cat > /etc/apt/sources.list.d/kubernetes.list << EOF
+
+cat << EOF > /etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
